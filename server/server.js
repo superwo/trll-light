@@ -26,9 +26,60 @@ mongoose.connect(
 
 // Models
 const { User } = require('./models/user');
+const { Board } = require('./models/board');
 
 // Middlewares
 const { auth } = require('./middleware/auth');
+
+//======================================
+//          BOARDS
+//======================================
+app.get('/api/boards', (req, res) => {
+  let order = req.query.order ? req.query.order : 'asc';
+  let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+  let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+
+  Board.find()
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, boards) => {
+      if (err) return res.status(400).send(err);
+
+      res.send(boards);
+    });
+});
+
+/// /api/boards?id=lahdfjkdsahfkj
+app.get('/api/boards/boards_by_id', (req, res) => {
+  let type = req.query.type;
+  let items = req.query.id;
+
+  if (type === 'array') {
+    let ids = req.query.id.split(',');
+    items = ids.map(item => {
+      return mongoose.Types.ObjectId(item);
+    });
+  }
+
+  Board.find({ _id: { $in: items } })
+    .populate('user')
+    .exec((err, docs) => {
+      return res.status(200).send(docs);
+    });
+});
+
+app.post('/api/boards', auth, (req, res) => {
+  const board = new Board(req.body);
+
+  board.save((err, doc) => {
+    if (err) return res.json({ success: false, err });
+
+    res.status(200).json({
+      success: true,
+      board: doc
+    });
+  });
+});
 
 //======================================
 //          USERS

@@ -1,0 +1,23 @@
+html {
+  --color-accent: #0079bf;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 14px;
+  height: 100%;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.mainLayout {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+}
