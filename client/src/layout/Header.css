@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 36px;
+  padding: 6px;
+  background-color: var(--color-accent);
+}
+
+.header .btn {
+  margin-right: 8px;
+}
+
+.logo {
+  height: 100%;
+}
+.logo img {
+  height: 100%;
+}
+
+.navigation,
+.header-utils {
+  display: flex;
+}
+
+.log-info {
+  border-radius: 50%;
+  background-color: #dfe1e6;
+  height: 32px;
+  width: 32px;
+  color: #2f415f;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}

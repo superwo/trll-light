@@ -1,0 +1,47 @@
+.card {
+  background-color: var(--color-accent);
+  padding: 10px;
+  width: 187px;
+  height: 96px;
+  display: inline-block;
+  border-radius: 3px;
+  font-size: 16px;
+  color: #ffffff;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-star {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  cursor: pointer;
+  transform: translateX(160%);
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.card-star.starred {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.card-star.starred svg {
+  stroke: #e6c60d;
+}
+
+.card:hover .card-star {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.card svg {
+  fill: transparent;
+  stroke-width: 45;
+  stroke: #ffffff;
+  transition: transform 0.2s;
+}
+.card svg:hover {
+  transform: scale(1.1);
+}

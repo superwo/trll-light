@@ -8,6 +8,7 @@ body {
   font-family: 'Noto Sans', sans-serif;
   font-size: 14px;
   height: 100%;
+  background-color: #fafbfc;
 }
 
 .container {
@@ -20,4 +21,11 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
