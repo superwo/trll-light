@@ -6,6 +6,7 @@ import Header from './layout/Header';
 import Boards from './layout/Boards';
 import Login from './layout/Login';
 import CardPage from './layout/CardPage';
+import Register from './layout/Register';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Switch>
           <Route path='/' exact component={Boards} />
           <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
           <Route path='/card/:id' component={CardPage} />
         </Switch>
       </main>

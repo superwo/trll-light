@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from '../components/Button';
 import useForm from '../hooks/useForm';
-import validate from '../utils/LoginFormValidationRules';
+import validate from '../utils/RegisterFormValidation';
 
 import './Login.css';
 
-function Login() {
+function Register() {
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validate
@@ -18,8 +18,21 @@ function Login() {
   return (
     <section className='login'>
       <div className='box'>
-        <h3 className='login-title'>Log in</h3>
+        <h3 className='login-title'>Register</h3>
         <form onSubmit={handleSubmit} noValidate autoComplete='off'>
+          <div className='control'>
+            <input
+              autoComplete='off'
+              className={`input ${errors.name && 'is-danger'}`}
+              type='text'
+              name='name'
+              onChange={handleChange}
+              value={values.name || ''}
+              placeholder='Enter name'
+              required
+            />
+            {errors.name && <p className='help is-danger'>{errors.name}</p>}
+          </div>
           <div className='control'>
             <input
               autoComplete='off'
@@ -48,7 +61,7 @@ function Login() {
             )}
           </div>
           <Button type='submit' classes='btn-full,btn-green'>
-            Login
+            Register
           </Button>
         </form>
       </div>
@@ -56,4 +69,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;
