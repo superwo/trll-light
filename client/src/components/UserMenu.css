@@ -1,0 +1,55 @@
+.user-menu {
+  border-radius: 50%;
+  background-color: #dfe1e6;
+  height: 32px;
+  width: 32px;
+  color: #2f415f;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+}
+
+.user-list {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 310px;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: none;
+  color: #172b4d;
+  cursor: default;
+}
+
+.user-name {
+  color: #5e6c84;
+  text-align: center;
+}
+
+.user-list a:link,
+.user-list a:visited {
+  padding: 6px;
+  transition: all 0.2s;
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.user-list a:hover {
+  background-color: #ececec;
+}
+
+.user-close {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  cursor: pointer;
+}
+.user-close svg {
+  fill: #797979;
+}

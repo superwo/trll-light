@@ -1,0 +1,16 @@
+.boards-category h2 {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #172b4d;
+}
+
+.boards-category h2 svg {
+  margin-right: 8px;
+}
+
+.boards-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 8px;
+}

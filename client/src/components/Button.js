@@ -1,14 +1,15 @@
 import React from 'react';
 import './Button.css';
 
-const Button = props => {
+const Button = ({ bold, children, onClick, type, classes, bgColor }) => {
   return (
     <button
-      style={{ fontWeight: props.bold ? 'bold' : 'normal' }}
-      className='btn'
-      onClick={props.onClick}
+      style={{ fontWeight: bold ? 'bold' : 'normal', backgroundColor: bgColor }}
+      className={`btn ${classes ? classes.split(',').join(' ') : ''}`}
+      type={type ? type : 'button'}
+      onClick={onClick}
     >
-      {props.children}
+      {children}
     </button>
   );
 };

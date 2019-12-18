@@ -2,9 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 36px;
+  height: 45px;
   padding: 6px;
-  background-color: var(--color-accent);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+  z-index: 5;
 }
 
 .header .btn {
@@ -13,6 +18,7 @@
 
 .logo {
   height: 100%;
+  cursor: pointer;
 }
 .logo img {
   height: 100%;
@@ -21,17 +27,4 @@
 .navigation,
 .header-utils {
   display: flex;
-}
-
-.log-info {
-  border-radius: 50%;
-  background-color: #dfe1e6;
-  height: 32px;
-  width: 32px;
-  color: #2f415f;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
 }
