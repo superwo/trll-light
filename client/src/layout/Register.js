@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '../components/Button';
 import useForm from '../hooks/useForm';
 import validate from '../utils/RegisterFormValidation';
+import { UserContext } from '../contexts/userContext';
 
 import './Login.css';
 
 function Register() {
+  const { register, errorMessage, user } = useContext(UserContext);
+
   const { values, errors, handleChange, handleSubmit } = useForm(
-    login,
+    registerUser,
     validate
   );
 
-  function login() {
-    console.log(values);
+  function registerUser() {
+    register(values);
+  }
+
+  if (user) {
+    return <Redirect to='/' />;
   }
 
   return (
@@ -63,6 +71,8 @@ function Register() {
           <Button type='submit' classes='btn-full,btn-green'>
             Register
           </Button>
+          <br />
+          {errorMessage && <p className='help is-danger'>{errorMessage}</p>}
         </form>
       </div>
     </section>

@@ -7,20 +7,24 @@ import Boards from './layout/Boards';
 import Login from './layout/Login';
 import CardPage from './layout/CardPage';
 import Register from './layout/Register';
+import { UserProvider } from './contexts/userContext';
+import PrivateRoute from './hoc/PrivateRoute';
 
 function App() {
   return (
-    <div className='mainLayout'>
-      <Header />
-      <main className='main-section'>
-        <Switch>
-          <Route path='/' exact component={Boards} />
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
-          <Route path='/card/:id' component={CardPage} />
-        </Switch>
-      </main>
-    </div>
+    <UserProvider>
+      <div className='mainLayout'>
+        <Header />
+        <main className='main-section'>
+          <Switch>
+            <PrivateRoute path='/' exact component={Boards} />
+            <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
+            <PrivateRoute path='/card/:id' component={CardPage} />
+          </Switch>
+        </main>
+      </div>
+    </UserProvider>
   );
 }
 

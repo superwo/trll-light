@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaRegUser, FaTimes } from 'react-icons/fa';
 import './UserMenu.css';
+import { UserContext } from '../contexts/userContext';
 
 const UserMenu = ({ name }) => {
   const [openMenu, isOpenMenu] = useState(false);
+  const { logout } = useContext(UserContext);
+
   return (
     <div className='user-menu' onClick={() => isOpenMenu(op => !op)}>
       <span>{name ? name : <FaRegUser />}</span>
@@ -19,6 +22,11 @@ const UserMenu = ({ name }) => {
         </li>
         <li>
           <Link to='/register'>Register</Link>
+        </li>
+        <li>
+          <span onClick={logout} style={{ cursor: 'pointer' }}>
+            Log Out
+          </span>
         </li>
         <span className='user-close'>
           <FaTimes />

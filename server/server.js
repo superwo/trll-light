@@ -89,20 +89,24 @@ app.get('/api/users/auth', auth, (req, res) => {
   res.status(200).json({
     isAuth: true,
     email: req.user.email,
-    name: req.user.name,
-    lastname: req.user.lastname
+    name: req.user.name
   });
 });
 
 app.post('/api/users/register', (req, res) => {
   const user = new User(req.body);
 
-  user.save((err, doc) => {
-    if (err) return res.json({ success: false, err });
+  user.generateToken((err, user) => {
+    if (err) return res.status(400).send(err);
+    user.save((err, doc) => {
+      if (err) return res.json({ loginSuccess: false, err });
 
-    res.status(200).json({
-      success: true,
-      userdata: doc
+      res
+        .cookie('w_auth', user.token)
+        .status(200)
+        .json({
+          loginSuccess: true
+        });
     });
   });
 });
