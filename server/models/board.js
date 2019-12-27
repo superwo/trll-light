@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const boardSchema = new mongoose.Schema(
+const boardSchema = new Schema(
   {
     name: {
       required: true,
@@ -14,10 +14,10 @@ const boardSchema = new mongoose.Schema(
       type: String,
       maxlength: 100000
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+    creator: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: 'User'
     },
     category: {
       required: true,
