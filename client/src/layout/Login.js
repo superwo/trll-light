@@ -1,24 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from '../components/Button';
 import useForm from '../hooks/useForm';
 import validate from '../utils/LoginFormValidationRules';
 import { UserContext } from '../contexts/userContext';
 import { Redirect } from 'react-router-dom';
+import { loginUser } from '../services/auth';
 
 import './Login.css';
 
 function Login() {
-  const { login, errorMessage, user } = useContext(UserContext);
+  const { login, isLoggedIn } = useContext(UserContext);
+  const [loginError, setLoginError] = useState('');
 
   const { values, errors, handleChange, handleSubmit } = useForm(
-    loginUser,
+    authSubmitHandler,
     validate
   );
 
-  function loginUser() {
-    login(values);
+  async function authSubmitHandler() {
+    try {
+      setLoginError('');
+      const userData = await loginUser(values);
+      login(userData.userId, userData.token);
+    } catch (err) {
+      console.log(err.message);
+      setLoginError(err.message || 'Login Failed. Try again');
+    }
   }
-  if (user) {
+  if (isLoggedIn) {
     return <Redirect to='/' />;
   }
 
@@ -58,7 +67,7 @@ function Login() {
             Login
           </Button>
           <br />
-          {errorMessage && <p className='help is-danger'>{errorMessage}</p>}
+          <p className='help is-danger'>{loginError}</p>
         </form>
       </div>
     </section>

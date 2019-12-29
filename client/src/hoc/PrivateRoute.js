@@ -1,19 +1,12 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Route } from 'react-router-dom';
 import { UserContext } from '../contexts/userContext';
 import Login from '../layout/Login';
 
 const PrivateRoute = ({ component, ...options }) => {
-  const { user, authenticateUser } = useContext(UserContext);
+  const { isLoggedIn } = useContext(UserContext);
 
-  useEffect(() => {
-    async function fu() {
-      await authenticateUser();
-    }
-    fu();
-  }, []);
-
-  const finalComponent = user ? component : Login;
+  const finalComponent = isLoggedIn ? component : Login;
 
   return <Route {...options} component={finalComponent} />;
 };
