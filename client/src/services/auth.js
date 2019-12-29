@@ -11,19 +11,11 @@ export const loginUser = async userData => {
   return response.data;
 };
 export const registerUser = async userData => {
-  try {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-    const response = await axios.post(
-      `${USER_SERVER}/signup`,
-      userData,
-      config
-    );
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+  const response = await axios.post(`${USER_SERVER}/signup`, userData, config);
+  return response.data;
 };

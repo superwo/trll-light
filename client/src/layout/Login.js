@@ -21,7 +21,7 @@ function Login() {
     try {
       setLoginError('');
       const userData = await loginUser(values);
-      login(userData.userId, userData.token);
+      login(userData.userId, userData.name, userData.token);
     } catch (err) {
       console.log(err.message);
       setLoginError(err.message || 'Login Failed. Try again');

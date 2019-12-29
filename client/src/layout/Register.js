@@ -1,25 +1,34 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Button from '../components/Button';
 import useForm from '../hooks/useForm';
 import validate from '../utils/RegisterFormValidation';
 import { UserContext } from '../contexts/userContext';
+import { registerUser } from '../services/auth';
 
 import './Login.css';
 
 function Register() {
-  const { register, errorMessage, user } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { login, userId } = useContext(UserContext);
 
   const { values, errors, handleChange, handleSubmit } = useForm(
-    registerUser,
+    authSubmitHandler,
     validate
   );
 
-  function registerUser() {
-    register(values);
+  async function authSubmitHandler() {
+    try {
+      const userData = await registerUser(values);
+      console.log(userData);
+      login(userData.userId, userData.name, userData.token);
+    } catch (err) {
+      console.log(err);
+      setErrorMessage('Registration failed. Try again.');
+    }
   }
 
-  if (user) {
+  if (userId) {
     return <Redirect to='/' />;
   }
 
