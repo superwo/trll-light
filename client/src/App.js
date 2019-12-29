@@ -9,12 +9,14 @@ import CardPage from './layout/CardPage';
 import Register from './layout/Register';
 import { UserProvider } from './contexts/userContext';
 import PrivateRoute from './hoc/PrivateRoute';
+import CreateBoard from './components/CreateBoard';
 
 function App() {
   return (
     <UserProvider>
       <div className='mainLayout'>
         <Header />
+        <CreateBoard />
         <main className='main-section'>
           <Switch>
             <PrivateRoute path='/' exact component={Boards} />

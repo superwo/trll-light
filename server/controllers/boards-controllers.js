@@ -65,12 +65,13 @@ const createBoard = async (req, res, next) => {
     );
   }
 
-  const { name, description, category } = req.body;
+  const { name, description, category, color } = req.body;
 
   const createdBoard = new Board({
     name,
     description,
     category,
+    color,
     creator: req.userData.userId
   });
 

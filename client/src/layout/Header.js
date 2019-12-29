@@ -35,7 +35,7 @@ function Header({ history }) {
           </Button>
         </li>
         <li>
-          <UserMenu name='Ra' />
+          <UserMenu />
         </li>
       </ul>
     </header>

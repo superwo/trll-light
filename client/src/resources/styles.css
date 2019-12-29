@@ -38,6 +38,14 @@ body {
   background-color: var(--color-accent);
 }
 
+.hidden {
+  display: none;
+}
+
+.transparent {
+  background: transparent;
+}
+
 ul,
 li {
   list-style: none;
