@@ -1,6 +1,7 @@
 html {
   --color-accent: #0079bf;
   --color-grey: #8d9094;
+  --color-warning: #c75353;
 }
 * {
   box-sizing: border-box;
@@ -44,6 +45,10 @@ body {
 
 .transparent {
   background: transparent;
+}
+
+.warning {
+  background-color: var(--color-warning) !important;
 }
 
 ul,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import './resources/styles.css';
@@ -12,11 +12,16 @@ import PrivateRoute from './hoc/PrivateRoute';
 import CreateBoard from './components/CreateBoard';
 
 function App() {
+  const [showCreateBoard, setShowCreateBoard] = useState(false);
+
   return (
     <UserProvider>
       <div className='mainLayout'>
-        <Header />
-        <CreateBoard />
+        <Header setShowCreateBoard={setShowCreateBoard} />
+        <CreateBoard
+          show={showCreateBoard}
+          toggleVisibility={setShowCreateBoard}
+        />
         <main className='main-section'>
           <Switch>
             <PrivateRoute path='/' exact component={Boards} />

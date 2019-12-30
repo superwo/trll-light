@@ -6,7 +6,7 @@ import './Header.css';
 import logo from '../resources/logo_transparent.png';
 import UserMenu from '../components/UserMenu';
 
-function Header({ history }) {
+function Header({ history, setShowCreateBoard }) {
   const redirectToHome = () => {
     history.push('/');
   };
@@ -25,7 +25,7 @@ function Header({ history }) {
       </div>
       <ul className='header-utils'>
         <li>
-          <Button>
+          <Button onClick={() => setShowCreateBoard(true)}>
             <FaPlus />
           </Button>
         </li>
