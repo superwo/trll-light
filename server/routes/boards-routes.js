@@ -10,7 +10,7 @@ router.use(checkAuth);
 
 router.get('/:bid', boardsControllers.getBoardById);
 
-router.get('/user/:uid', boardsControllers.getBoardsByUserId);
+router.get('/', boardsControllers.getBoardsByUserId);
 
 router.post(
   '/',

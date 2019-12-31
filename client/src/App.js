@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import './resources/styles.css';
 import Header from './layout/Header';
-import Boards from './layout/Boards';
+import BoardsContainer from './layout/BoardsContainer';
 import Login from './layout/Login';
 import CardPage from './layout/CardPage';
 import Register from './layout/Register';
@@ -24,7 +24,7 @@ function App() {
         />
         <main className='main-section'>
           <Switch>
-            <PrivateRoute path='/' exact component={Boards} />
+            <PrivateRoute path='/' exact component={BoardsContainer} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <PrivateRoute path='/card/:id' component={CardPage} />

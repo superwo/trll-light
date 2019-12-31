@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Modal from './Modal';
 import Button from './Button';
 import { UserContext } from '../contexts/userContext';
@@ -34,10 +34,14 @@ const CreateBoard = ({ show, toggleVisibility }) => {
       setTitle('');
       setDescription('');
       toggleVisibility(false);
-    } catch (err) {
-      setTimeout(clearError, 3000);
-    }
+    } catch (err) {}
   };
+
+  useEffect(() => {
+    const timer = setTimeout(clearError, 3000);
+
+    return () => clearTimeout(timer);
+  }, [error]);
 
   return (
     <Modal

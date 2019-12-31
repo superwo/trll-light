@@ -31,7 +31,7 @@ const getBoardById = async (req, res, next) => {
 };
 
 const getBoardsByUserId = async (req, res, next) => {
-  const userId = req.params.uid;
+  const userId = req.userData.userId;
 
   let userWithBoards;
   try {
