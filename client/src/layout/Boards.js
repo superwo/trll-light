@@ -1,7 +1,10 @@
 import React from 'react';
 import Card from '../components/Card';
 
-const Boards = ({ title, cards, children }) => {
+const Boards = ({ title, updateBoard, cards, children }) => {
+  if (cards.length === 0) {
+    return '';
+  }
   return (
     <React.Fragment>
       <h2>
@@ -13,8 +16,12 @@ const Boards = ({ title, cards, children }) => {
           <Card
             key={card.id}
             title={card.name}
+            description={card.description}
+            category={card.category}
             starred={card.starred}
             color={card.color}
+            id={card.id}
+            updateCard={updateBoard}
             styles={{ backgroundColor: `${card.color}` }}
           />
         ))}

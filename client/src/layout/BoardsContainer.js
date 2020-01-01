@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Card from '../components/Card';
 import { FaRegStar, FaRegClock } from 'react-icons/fa';
 import { BOARDS_SERVER } from '../services/misc';
 import { UserContext } from '../contexts/userContext';
@@ -25,7 +24,22 @@ const BoardsContainer = () => {
       setBoards(data.boards);
     };
     fetchData();
-  }, []);
+  }, [token, sendRequest]);
+
+  const updateBoard = async newBoard => {
+    await sendRequest(
+      `${BOARDS_SERVER}/${newBoard.id}`,
+      'PATCH',
+      JSON.stringify(newBoard),
+      {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token
+      }
+    );
+    setBoards(
+      boards.map(board => (board.id === newBoard.id ? newBoard : { ...board }))
+    );
+  };
 
   if (isLoading) {
     return <LoadingSpinner asOverlay />;
@@ -40,17 +54,11 @@ const BoardsContainer = () => {
       <ul className='boards-category'>
         <li>
           <Boards
+            updateBoard={updateBoard}
             title='Starred Boards'
-            cards={[
-              { id: 0, name: 'Home', starred: true, color: 'green' },
-              {
-                id: 1,
-                name:
-                  'A very special project and very long very long very long very long very long very long very long very long very long very long',
-                starred: false,
-                color: 'green'
-              }
-            ]}
+            cards={boards
+              .filter(card => card.starred)
+              .map(card => ({ ...card }))}
           >
             <FaRegStar />
           </Boards>
@@ -58,6 +66,7 @@ const BoardsContainer = () => {
         <li>
           {boards.length > 0 && (
             <Boards
+              updateBoard={updateBoard}
               title='Recently Viewed'
               cards={boards.map(card => ({ ...card }))}
             >

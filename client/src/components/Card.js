@@ -4,15 +4,38 @@ import { FaStar } from 'react-icons/fa';
 
 import './Card.css';
 
-const Card = ({ title, starred, styles, history, id = '1' }) => {
+const Card = ({
+  updateCard,
+  title,
+  description,
+  category,
+  color,
+  starred,
+  styles,
+  history,
+  id
+}) => {
   return (
-    <div
-      onClick={() => history.push(`/card/${id}`)}
-      style={styles}
-      className='card'
-    >
-      {title.length > 50 ? title.slice(0, 45) + '...' : title}
-      <span className={`card-star ${starred ? 'starred' : ''}`}>
+    <div style={styles} className='card'>
+      <span
+        style={{ cursor: 'pointer' }}
+        onClick={() => history.push(`/card/${id}`)}
+      >
+        {title.length > 50 ? title.slice(0, 45) + '...' : title}
+      </span>
+      <span
+        onClick={() =>
+          updateCard({
+            name: title,
+            description,
+            category,
+            starred: !starred,
+            color,
+            id
+          })
+        }
+        className={`card-star ${starred ? 'starred' : ''}`}
+      >
         <FaStar />
       </span>
     </div>
