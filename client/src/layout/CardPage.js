@@ -16,6 +16,7 @@ const CardPage = () => {
   const [board, setBoard] = useState(false);
   const [editName, setEditName] = useState(false);
   const [boardName, setBoardName] = useState('');
+  const [isStarred, setIsStarred] = useState(false);
   const { token } = useContext(UserContext);
   const { id } = useParams();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -28,14 +29,37 @@ const CardPage = () => {
         });
         setBoard(data.board);
         setBoardName(data.board.name);
+        setIsStarred(data.board.starred);
       } catch (err) {}
     };
     fetchBoard();
   }, []);
 
-  const updateBoardNameHandler = e => {
-    e.preventDefault();
-    console.log(boardName);
+  useEffect(() => {
+    updateBoardHandler();
+  }, [isStarred]);
+
+  const updateBoardHandler = async e => {
+    e && e.preventDefault();
+    if (boardName.length > 5) {
+      const newBoard = {
+        ...board,
+        name: boardName ? boardName : board.name,
+        starred: isStarred
+      };
+      try {
+        const data = await sendRequest(
+          `${BOARDS_SERVER}/${id}`,
+          'PATCH',
+          JSON.stringify(newBoard),
+          {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        );
+        setBoard(data.board);
+      } catch (err) {}
+    }
     setEditName(false);
   };
 
@@ -60,7 +84,7 @@ const CardPage = () => {
         <div className='cardpage-header__left'>
           <div className='card-page__title'>
             {editName ? (
-              <form onSubmit={updateBoardNameHandler}>
+              <form onSubmit={updateBoardHandler}>
                 <input
                   style={{
                     padding: '3px 10px',
@@ -73,15 +97,21 @@ const CardPage = () => {
                   autoFocus
                   value={boardName}
                   onChange={e => setBoardName(e.target.value)}
-                  onBlur={() => setEditName(false)}
+                  onBlur={updateBoardHandler}
                 />
               </form>
             ) : (
               <span onClick={() => setEditName(true)}>{board.name}</span>
             )}
           </div>
-          <Button onClick={() => console.log('click')}>
-            <FaRegStar />
+          <Button
+            onClick={e => {
+              setIsStarred(val => !val);
+            }}
+          >
+            <span className={isStarred ? 'accent-icon' : ''}>
+              <FaRegStar />
+            </span>
           </Button>
           <Button onClick={() => console.log(board.category)}>
             {board.category}

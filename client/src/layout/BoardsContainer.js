@@ -20,7 +20,6 @@ const BoardsContainer = () => {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token
       });
-      console.log(data);
       setBoards(data.boards);
     };
     fetchData();

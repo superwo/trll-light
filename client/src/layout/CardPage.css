@@ -52,6 +52,9 @@
   border-radius: 3px;
   display: block;
 }
+.accent-icon svg {
+  fill: #e6c60d !important;
+}
 .card-page__title span:hover {
   background-color: rgba(255, 255, 255, 0.288);
 }
