@@ -27,7 +27,7 @@ function App() {
             <PrivateRoute path='/' exact component={BoardsContainer} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
-            <PrivateRoute path='/card/:id' component={CardPage} />
+            <PrivateRoute path='/:id' component={CardPage} />
           </Switch>
         </main>
       </div>

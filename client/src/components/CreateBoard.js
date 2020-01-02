@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Modal from './Modal';
 import Button from './Button';
 import { UserContext } from '../contexts/userContext';
@@ -11,13 +12,14 @@ const CreateBoard = ({ show, toggleVisibility }) => {
   const [description, setDescription] = useState('');
   const [color, setColor] = useState('#519839');
   const { token } = useContext(UserContext);
+  const history = useHistory();
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const boardSubmitHandler = async event => {
     event.preventDefault();
     try {
-      await sendRequest(
+      const data = await sendRequest(
         BOARDS_SERVER,
         'POST',
         JSON.stringify({
@@ -34,6 +36,7 @@ const CreateBoard = ({ show, toggleVisibility }) => {
       setTitle('');
       setDescription('');
       toggleVisibility(false);
+      history.push(`/${data.board._id}`);
     } catch (err) {}
   };
 

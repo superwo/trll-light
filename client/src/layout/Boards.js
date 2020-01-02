@@ -1,8 +1,8 @@
 import React from 'react';
-import Card from '../components/Card';
+import Board from '../components/Board';
 
-const Boards = ({ title, updateBoard, cards, children }) => {
-  if (cards.length === 0) {
+const Boards = ({ title, updateBoard, boards, children }) => {
+  if (boards.length === 0) {
     return '';
   }
   return (
@@ -12,17 +12,17 @@ const Boards = ({ title, updateBoard, cards, children }) => {
         <span>{title}</span>
       </h2>
       <div className='boards-container'>
-        {cards.map(card => (
-          <Card
-            key={card.id}
-            title={card.name}
-            description={card.description}
-            category={card.category}
-            starred={card.starred}
-            color={card.color}
-            id={card.id}
-            updateCard={updateBoard}
-            styles={{ backgroundColor: `${card.color}` }}
+        {boards.map(board => (
+          <Board
+            key={board.id}
+            title={board.name}
+            description={board.description}
+            category={board.category}
+            starred={board.starred}
+            color={board.color}
+            id={board.id}
+            updateBoard={updateBoard}
+            styles={{ backgroundColor: `${board.color}` }}
           />
         ))}
       </div>

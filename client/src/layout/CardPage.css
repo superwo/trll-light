@@ -11,3 +11,47 @@
   height: 45px;
   background-color: inherit;
 }
+
+.cardpage-header {
+  height: 46px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardpage-header > div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.cardpage-header__left > *:not(:last-child) {
+  margin-right: 16px;
+  position: relative;
+}
+
+.cardpage-header__left > *:not(:last-child)::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 20%;
+  right: -8px;
+  width: 1px;
+  height: 60%;
+  background-color: rgba(255, 255, 255, 0.308);
+}
+
+.card-page__title {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+.cardpage-header span {
+  cursor: pointer;
+  padding: 3px 12px;
+  border-radius: 3px;
+  display: block;
+}
+.card-page__title span:hover {
+  background-color: rgba(255, 255, 255, 0.288);
+}

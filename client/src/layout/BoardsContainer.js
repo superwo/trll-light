@@ -56,7 +56,7 @@ const BoardsContainer = () => {
           <Boards
             updateBoard={updateBoard}
             title='Starred Boards'
-            cards={boards
+            boards={boards
               .filter(card => card.starred)
               .map(card => ({ ...card }))}
           >
@@ -68,7 +68,7 @@ const BoardsContainer = () => {
             <Boards
               updateBoard={updateBoard}
               title='Recently Viewed'
-              cards={boards.map(card => ({ ...card }))}
+              boards={boards.map(card => ({ ...card }))}
             >
               <FaRegClock />
             </Boards>

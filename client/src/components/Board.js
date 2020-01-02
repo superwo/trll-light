@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 
-import './Card.css';
+import './Board.css';
 
-const Card = ({
-  updateCard,
+const Board = ({
+  updateBoard,
   title,
   description,
   category,
@@ -19,13 +19,13 @@ const Card = ({
     <div style={styles} className='card'>
       <span
         style={{ cursor: 'pointer' }}
-        onClick={() => history.push(`/card/${id}`)}
+        onClick={() => history.push(`/${id}`)}
       >
         {title.length > 50 ? title.slice(0, 45) + '...' : title}
       </span>
       <span
         onClick={() =>
-          updateCard({
+          updateBoard({
             name: title,
             description,
             category,
@@ -42,4 +42,4 @@ const Card = ({
   );
 };
 
-export default withRouter(Card);
+export default withRouter(Board);
