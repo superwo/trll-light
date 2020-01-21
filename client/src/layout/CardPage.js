@@ -15,7 +15,9 @@ import './CardPage.css';
 const CardPage = () => {
   const [board, setBoard] = useState(false);
   const [editName, setEditName] = useState(false);
+  const [editCategory, setEditCategory] = useState(false);
   const [boardName, setBoardName] = useState('');
+  const [boardCategory, setBoardCategory] = useState('');
   const [isStarred, setIsStarred] = useState(false);
   const { token } = useContext(UserContext);
   const { id } = useParams();
@@ -29,6 +31,7 @@ const CardPage = () => {
         });
         setBoard(data.board);
         setBoardName(data.board.name);
+        setBoardCategory(data.board.category);
         setIsStarred(data.board.starred);
       } catch (err) {}
     };
@@ -41,10 +44,11 @@ const CardPage = () => {
 
   const updateBoardHandler = async e => {
     e && e.preventDefault();
-    if (boardName.length > 5) {
+    if (boardName.length > 1 && boardCategory.length > 1) {
       const newBoard = {
         ...board,
         name: boardName ? boardName : board.name,
+        category: boardCategory ? boardCategory : board.category,
         starred: isStarred
       };
       try {
@@ -61,6 +65,7 @@ const CardPage = () => {
       } catch (err) {}
     }
     setEditName(false);
+    setEditCategory(false);
   };
 
   if (isLoading) {
@@ -113,9 +118,27 @@ const CardPage = () => {
               <FaRegStar />
             </span>
           </Button>
-          <Button onClick={() => console.log(board.category)}>
-            {board.category}
-          </Button>
+          {editCategory ? (
+            <form onSubmit={updateBoardHandler}>
+              <input
+                style={{
+                  padding: '3px 10px',
+                  borderRadius: '3px',
+                  fontSize: '18px',
+                  outline: 'none',
+                  border: 'none'
+                }}
+                autoFocus
+                value={boardCategory}
+                onChange={e => setBoardCategory(e.target.value)}
+                onBlur={updateBoardHandler}
+              />
+            </form>
+          ) : (
+            <Button onClick={() => setEditCategory(true)}>
+              {board.category}
+            </Button>
+          )}
         </div>
         <div className='cardpage-header__right'>
           <Button>... Show Menu</Button>
