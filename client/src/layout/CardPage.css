@@ -58,3 +58,30 @@
 .card-page__title span:hover {
   background-color: rgba(255, 255, 255, 0.288);
 }
+
+.lists-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.lists-container > div {
+  margin-right: 8px;
+}
+
+.empty-list {
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  color: white;
+  border-radius: 3px;
+  box-sizing: border-box;
+  width: 272px;
+  position: relative;
+  white-space: normal;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 200ms;
+}
+.empty-list:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}

@@ -117,7 +117,7 @@ const updateBoard = async (req, res, next) => {
     );
   }
 
-  const { name, description, category, starred, color } = req.body;
+  const { name, description, category, lists, starred, color } = req.body;
   const boardId = req.params.bid;
 
   let board;
@@ -140,6 +140,7 @@ const updateBoard = async (req, res, next) => {
   board.description = description;
   board.category = category;
   board.starred = starred;
+  board.lists = lists;
   board.color = color;
 
   try {

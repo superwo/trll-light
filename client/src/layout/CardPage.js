@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
+import uuid from 'uuid/v4';
 import { useParams } from 'react-router-dom';
 import CardList from '../components/CardList';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorModal from '../components/ErrorModal';
 import Button from '../components/Button';
-import { FaRegStar } from 'react-icons/fa';
+import { FaRegStar, FaPlus, FaTimes } from 'react-icons/fa';
 
 import { UserContext } from '../contexts/userContext';
 import { useHttpClient } from '../hooks/useHttp';
@@ -14,11 +15,16 @@ import './CardPage.css';
 
 const CardPage = () => {
   const [board, setBoard] = useState(false);
-  const [editName, setEditName] = useState(false);
-  const [editCategory, setEditCategory] = useState(false);
   const [boardName, setBoardName] = useState('');
   const [boardCategory, setBoardCategory] = useState('');
   const [isStarred, setIsStarred] = useState(false);
+
+  const [editName, setEditName] = useState(false);
+  const [editCategory, setEditCategory] = useState(false);
+  const [addList, setAddList] = useState(false);
+
+  const [listName, setListName] = useState('');
+
   const { token } = useContext(UserContext);
   const { id } = useParams();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -29,6 +35,7 @@ const CardPage = () => {
         const data = await sendRequest(`${BOARDS_SERVER}/${id}`, 'GET', null, {
           Authorization: 'Bearer ' + token
         });
+        console.log(data.board);
         setBoard(data.board);
         setBoardName(data.board.name);
         setBoardCategory(data.board.category);
@@ -68,6 +75,57 @@ const CardPage = () => {
     setEditCategory(false);
   };
 
+  const addBoardList = async () => {
+    if (listName) {
+      try {
+        const newBoard = {
+          ...board,
+          lists: [...board.lists, { name: listName, id: uuid(), items: [] }]
+        };
+        const data = await sendRequest(
+          `${BOARDS_SERVER}/${id}`,
+          'PATCH',
+          JSON.stringify(newBoard),
+          {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        );
+        setBoard(data.board);
+      } catch (err) {}
+
+      setListName('');
+      setAddList(false);
+    }
+  };
+
+  const addListCard = async (listId, val) => {
+    try {
+      const newBoard = {
+        ...board,
+        lists: board.lists.map(list => {
+          if (list.id === listId) {
+            const items = [...list.items];
+            items.push(val);
+            return { ...list, items };
+          } else {
+            return { ...list };
+          }
+        })
+      };
+      const data = await sendRequest(
+        `${BOARDS_SERVER}/${id}`,
+        'PATCH',
+        JSON.stringify(newBoard),
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        }
+      );
+      setBoard(data.board);
+    } catch (err) {}
+  };
+
   if (isLoading) {
     return <LoadingSpinner asOverlay />;
   }
@@ -91,14 +149,7 @@ const CardPage = () => {
             {editName ? (
               <form onSubmit={updateBoardHandler}>
                 <input
-                  style={{
-                    padding: '3px 10px',
-                    borderRadius: '3px',
-                    fontSize: '18px',
-                    outline: 'none',
-                    border: 'none',
-                    width: '100%'
-                  }}
+                  className='input-s'
                   autoFocus
                   value={boardName}
                   onChange={e => setBoardName(e.target.value)}
@@ -121,13 +172,7 @@ const CardPage = () => {
           {editCategory ? (
             <form onSubmit={updateBoardHandler}>
               <input
-                style={{
-                  padding: '3px 10px',
-                  borderRadius: '3px',
-                  fontSize: '18px',
-                  outline: 'none',
-                  border: 'none'
-                }}
+                className='input-s'
                 autoFocus
                 value={boardCategory}
                 onChange={e => setBoardCategory(e.target.value)}
@@ -144,14 +189,66 @@ const CardPage = () => {
           <Button>... Show Menu</Button>
         </div>
       </header>
-      <CardList
-        title='To Do'
-        lists={[
-          { name: 'sanatate', id: 0 },
-          { name: 'Development', id: 1 },
-          { name: 'Sport', id: 2 }
-        ]}
-      />
+      <main className='lists-container'>
+        {board.lists.length > 0 &&
+          board.lists.map(list => (
+            <CardList
+              addListCard={addListCard}
+              key={list.id}
+              id={list.id}
+              title={list.name}
+              lists={list.items}
+            />
+          ))}
+        {addList ? (
+          <div
+            className='empty-list'
+            style={{
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              cursor: 'auto',
+              backgroundColor: '#ebecf0'
+            }}
+          >
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                addBoardList();
+              }}
+            >
+              <input
+                className='input-s'
+                style={{ marginBottom: '5px' }}
+                autoFocus
+                value={listName}
+                onChange={e => setListName(e.target.value)}
+              />
+            </form>
+            <div
+              onBlur={() => setAddList(false)}
+              style={{ display: 'flex', alignItems: 'center' }}
+            >
+              <Button onClick={addBoardList} classes='btn-green'>
+                Add List
+              </Button>
+              <FaTimes
+                onClick={() => setAddList(false)}
+                style={{
+                  fontSize: '18px',
+                  fill: '#2f415f',
+                  marginLeft: '5px',
+                  cursor: 'pointer'
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className='empty-list' onClick={() => setAddList(true)}>
+            <FaPlus />{' '}
+            <span style={{ marginLeft: '10px' }}>Add another list</span>
+          </div>
+        )}
+      </main>
     </div>
   ) : (
     ''
