@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaPlus, FaTrash, FaPencilAlt } from 'react-icons/fa';
 
 import './CardList.css';
 
-const CardList = ({ title, lists, id, addListCard }) => {
+const CardList = ({ title, lists, id, addListCard, updateList }) => {
+  const [displayLists, setDisplayLists] = useState([]);
   const [addCard, setAddCard] = useState(false);
   const [cardName, setCardName] = useState('');
 
-  const submitHandler = e => {
+  useEffect(() => {
+    setDisplayLists(lists);
+  }, [lists]);
+
+  const addCardHandler = e => {
     e.preventDefault();
     if (cardName) {
       addListCard(id, cardName);
@@ -16,17 +21,45 @@ const CardList = ({ title, lists, id, addListCard }) => {
     }
   };
 
+  const deleteListHandler = () => {
+    try {
+      updateList(id);
+    } catch (error) {}
+  };
+
+  const deleteListItemHandler = async index => {
+    const newList = displayLists.filter((item, ind) => ind !== index);
+    try {
+      await updateList(id, newList);
+      setDisplayLists(newList);
+    } catch (error) {}
+  };
+
   return (
     <div className='card-list'>
-      <h4 className='card-list-title'>{title}</h4>
+      <header>
+        <h4 className='card-list-title'>{title}</h4>
+        <FaTrash onClick={deleteListHandler} />
+      </header>
       <ul>
-        {lists.map((name, ind) => {
-          return <li key={ind}>{name}</li>;
+        {displayLists.map((name, ind) => {
+          return (
+            <li key={ind}>
+              <span>{name}</span>
+              <span>
+                <FaTrash
+                  onClick={() => deleteListItemHandler(ind)}
+                  style={{ marginRight: '5px' }}
+                />
+                <FaPencilAlt />
+              </span>
+            </li>
+          );
         })}
       </ul>
       <footer>
         {addCard ? (
-          <form onSubmit={submitHandler}>
+          <form onSubmit={addCardHandler}>
             <input
               onBlur={() => setAddCard(false)}
               value={cardName}

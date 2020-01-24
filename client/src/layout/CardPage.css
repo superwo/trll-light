@@ -1,5 +1,6 @@
 .card-page {
   position: relative;
+  height: calc(100% - 46px);
 }
 .card-page::before {
   content: '';

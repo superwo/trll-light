@@ -16,11 +16,17 @@ const BoardsContainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await sendRequest(BOARDS_SERVER, 'GET', null, {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      });
-      setBoards(data.boards);
+      try {
+        const data = await sendRequest(BOARDS_SERVER, 'GET', null, {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        });
+        setBoards(data.boards);
+      } catch (err) {
+        if ((err.message = 'Could not find boards for the provided user id.')) {
+          clearError();
+        }
+      }
     };
     fetchData();
   }, [token, sendRequest]);

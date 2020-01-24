@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import uuid from 'uuid/v4';
+import { CSSTransition } from 'react-transition-group';
 import { useParams } from 'react-router-dom';
 import CardList from '../components/CardList';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorModal from '../components/ErrorModal';
+import Menu from '../components/Menu';
 import Button from '../components/Button';
 import { FaRegStar, FaPlus, FaTimes } from 'react-icons/fa';
 
@@ -19,6 +21,8 @@ const CardPage = () => {
   const [boardCategory, setBoardCategory] = useState('');
   const [isStarred, setIsStarred] = useState(false);
 
+  const [showMenu, setShowMenu] = useState(false);
+
   const [editName, setEditName] = useState(false);
   const [editCategory, setEditCategory] = useState(false);
   const [addList, setAddList] = useState(false);
@@ -28,6 +32,11 @@ const CardPage = () => {
   const { token } = useContext(UserContext);
   const { id } = useParams();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const {
+    error: asError,
+    sendRequest: sendAsReq,
+    clearError: clearAsError
+  } = useHttpClient();
 
   useEffect(() => {
     const fetchBoard = async () => {
@@ -75,6 +84,68 @@ const CardPage = () => {
     setEditCategory(false);
   };
 
+  const updateAsBoardHandler = async color => {
+    if (color) {
+      const newBoard = {
+        ...board,
+        color
+      };
+      try {
+        const data = await sendAsReq(
+          `${BOARDS_SERVER}/${id}`,
+          'PATCH',
+          JSON.stringify(newBoard),
+          {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token
+          }
+        );
+        if (!asError) {
+          setBoard(data.board);
+        }
+        clearAsError();
+      } catch (err) {}
+    }
+    setEditName(false);
+    setEditCategory(false);
+  };
+  const updateAsListItemsHandler = async (listId, items) => {
+    let lists = [];
+    if (items) {
+      lists = board.lists.map(list => {
+        if (list.id === listId) {
+          return { ...list, items };
+        } else {
+          return { ...list };
+        }
+      });
+    } else {
+      lists = board.lists.filter(list => list.id !== listId);
+    }
+    const newBoard = {
+      ...board,
+      lists: lists
+    };
+    try {
+      const data = await sendAsReq(
+        `${BOARDS_SERVER}/${id}`,
+        'PATCH',
+        JSON.stringify(newBoard),
+        {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token
+        }
+      );
+      if (!asError) {
+        setBoard(data.board);
+      }
+      clearAsError();
+    } catch (err) {}
+
+    setEditName(false);
+    setEditCategory(false);
+  };
+
   const addBoardList = async () => {
     if (listName) {
       try {
@@ -113,7 +184,7 @@ const CardPage = () => {
           }
         })
       };
-      const data = await sendRequest(
+      const data = await sendAsReq(
         `${BOARDS_SERVER}/${id}`,
         'PATCH',
         JSON.stringify(newBoard),
@@ -122,8 +193,12 @@ const CardPage = () => {
           Authorization: 'Bearer ' + token
         }
       );
-      setBoard(data.board);
-    } catch (err) {}
+      if (!asError) {
+        setBoard(data.board);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (isLoading) {
@@ -138,8 +213,7 @@ const CardPage = () => {
     <div
       style={{
         padding: '10px',
-        backgroundColor: `${board.color}`,
-        height: '100%'
+        backgroundColor: `${board.color}`
       }}
       className='card-page'
     >
@@ -186,7 +260,7 @@ const CardPage = () => {
           )}
         </div>
         <div className='cardpage-header__right'>
-          <Button>... Show Menu</Button>
+          <Button onClick={() => setShowMenu(true)}>... Show Menu</Button>
         </div>
       </header>
       <main className='lists-container'>
@@ -198,6 +272,7 @@ const CardPage = () => {
               id={list.id}
               title={list.name}
               lists={list.items}
+              updateList={updateAsListItemsHandler}
             />
           ))}
         {addList ? (
@@ -249,6 +324,18 @@ const CardPage = () => {
           </div>
         )}
       </main>
+      <CSSTransition
+        in={showMenu}
+        timeout={300}
+        classNames='menu'
+        unmountOnExit
+      >
+        <Menu
+          closeMenu={setShowMenu}
+          board={board}
+          updateColor={updateAsBoardHandler}
+        />
+      </CSSTransition>
     </div>
   ) : (
     ''

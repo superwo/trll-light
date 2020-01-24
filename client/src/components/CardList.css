@@ -12,7 +12,15 @@
 }
 
 .card-list h4 {
+  margin: 0;
+  cursor: pointer;
+}
+
+.card-list header {
   margin: 0 0 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-list li {
@@ -22,7 +30,10 @@
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   padding: 10px;
   cursor: pointer;
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
   margin-bottom: 8px;
   max-width: 300px;
   min-height: 20px;
@@ -30,8 +41,22 @@
   text-decoration: none;
 }
 
+.card-list svg {
+  fill: var(--color-grey);
+  cursor: pointer;
+}
+
+.card-list li span:last-child {
+  transition: transform 100ms ease-in-out;
+  transform: translateX(45px);
+}
+
 .card-list li:hover {
   background-color: #f4f5f8;
+}
+
+.card-list li:hover span:last-child {
+  transform: translateX(0);
 }
 
 .card-list footer {
