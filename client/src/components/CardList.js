@@ -35,6 +35,10 @@ const CardList = ({ title, lists, id, addListCard, updateList }) => {
     } catch (error) {}
   };
 
+  const updateListItemHandler = () => {
+    console.log('Update item');
+  };
+
   return (
     <div className='card-list'>
       <header>
@@ -51,7 +55,7 @@ const CardList = ({ title, lists, id, addListCard, updateList }) => {
                   onClick={() => deleteListItemHandler(ind)}
                   style={{ marginRight: '5px' }}
                 />
-                <FaPencilAlt />
+                <FaPencilAlt onClick={() => updateListItemHandler()} />
               </span>
             </li>
           );

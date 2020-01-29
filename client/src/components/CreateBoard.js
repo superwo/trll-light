@@ -44,7 +44,7 @@ const CreateBoard = ({ show, toggleVisibility }) => {
     const timer = setTimeout(clearError, 3000);
 
     return () => clearTimeout(timer);
-  }, [error]);
+  }, [error, clearError]);
 
   return (
     <Modal

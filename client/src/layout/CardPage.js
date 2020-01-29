@@ -52,10 +52,12 @@ const CardPage = () => {
       } catch (err) {}
     };
     fetchBoard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     updateBoardHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStarred]);
 
   const updateBoardHandler = async e => {

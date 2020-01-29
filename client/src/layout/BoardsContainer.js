@@ -29,7 +29,7 @@ const BoardsContainer = () => {
       }
     };
     fetchData();
-  }, [token, sendRequest]);
+  }, [token, sendRequest, clearError]);
 
   const updateBoard = async newBoard => {
     await sendRequest(
