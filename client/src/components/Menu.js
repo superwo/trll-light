@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { SketchPicker } from 'react-color';
 
 import './Menu.css';
-import { FaTimes, FaClipboardList } from 'react-icons/fa';
+import { FaTimes, FaClipboardList, FaTrash } from 'react-icons/fa';
 
-const Menu = ({ board, updateColor, closeMenu }) => {
+const Menu = ({ board, updateColor, deleteBoard, closeMenu }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [color, setColor] = useState('red');
 
@@ -50,6 +50,19 @@ const Menu = ({ board, updateColor, closeMenu }) => {
             <SketchPicker color={color} onChange={handleColorChange} />
           </li>
         )}
+        <li
+          style={{
+            marginTop: '10px',
+            paddingTop: '8px',
+            borderTop: '1px solid #999'
+          }}
+          onClick={() => deleteBoard(board.id)}
+        >
+          <span className='menu-icon'>
+            <FaTrash />
+          </span>
+          <strong className='menu-item'>!DELETE BOARD!</strong>
+        </li>
       </ul>
     </div>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTrash, FaPencilAlt } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 import './CardList.css';
+import CardListItem from './CardListItem';
 
 const CardList = ({ title, lists, id, addListCard, updateList }) => {
   const [displayLists, setDisplayLists] = useState([]);
@@ -35,8 +36,20 @@ const CardList = ({ title, lists, id, addListCard, updateList }) => {
     } catch (error) {}
   };
 
-  const updateListItemHandler = () => {
-    console.log('Update item');
+  const updateListItemHandler = async (nameId, newName) => {
+    const updatedList = displayLists.map((item, ind) => {
+      if (ind === nameId) {
+        return newName;
+      } else {
+        return item;
+      }
+    });
+    try {
+      await updateList(id, updatedList);
+      setDisplayLists(updatedList);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -48,16 +61,13 @@ const CardList = ({ title, lists, id, addListCard, updateList }) => {
       <ul>
         {displayLists.map((name, ind) => {
           return (
-            <li key={ind}>
-              <span>{name}</span>
-              <span>
-                <FaTrash
-                  onClick={() => deleteListItemHandler(ind)}
-                  style={{ marginRight: '5px' }}
-                />
-                <FaPencilAlt onClick={() => updateListItemHandler()} />
-              </span>
-            </li>
+            <CardListItem
+              key={ind}
+              name={name}
+              id={ind}
+              deleteItem={() => deleteListItemHandler(ind)}
+              updateItem={newName => updateListItemHandler(ind, newName)}
+            />
           );
         })}
       </ul>

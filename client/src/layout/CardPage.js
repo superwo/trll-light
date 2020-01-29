@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import uuid from 'uuid/v4';
 import { CSSTransition } from 'react-transition-group';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import CardList from '../components/CardList';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorModal from '../components/ErrorModal';
@@ -37,6 +37,8 @@ const CardPage = () => {
     sendRequest: sendAsReq,
     clearError: clearAsError
   } = useHttpClient();
+
+  const history = useHistory();
 
   useEffect(() => {
     const fetchBoard = async () => {
@@ -203,6 +205,14 @@ const CardPage = () => {
     }
   };
 
+  const deleteBoard = async boardId => {
+    await sendRequest(`${BOARDS_SERVER}/${boardId}`, 'DELETE', null, {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token
+    });
+    history.push('/');
+  };
+
   if (isLoading) {
     return <LoadingSpinner asOverlay />;
   }
@@ -335,6 +345,7 @@ const CardPage = () => {
         <Menu
           closeMenu={setShowMenu}
           board={board}
+          deleteBoard={deleteBoard}
           updateColor={updateAsBoardHandler}
         />
       </CSSTransition>
