@@ -15,12 +15,7 @@ const Boards = ({ title, updateBoard, boards, children }) => {
         {boards.map(board => (
           <Board
             key={board.id}
-            title={board.name}
-            description={board.description}
-            category={board.category}
-            starred={board.starred}
-            color={board.color}
-            id={board.id}
+            board={board}
             updateBoard={updateBoard}
             styles={{ backgroundColor: `${board.color}` }}
           />

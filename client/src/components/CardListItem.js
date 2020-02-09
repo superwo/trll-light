@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 
-const CardListItem = ({ name, deleteItem, updateItem }) => {
+const CardListItem = ({ name, deleteItem, updateItem, provided }) => {
   const [editMode, setEditMode] = useState(false);
   const [newName, setNewName] = useState('');
 
